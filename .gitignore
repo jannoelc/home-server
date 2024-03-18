@@ -1,0 +1,24 @@
+.env
+__generated__
+
+# main stack
+**/admin/portainer/data
+**/admin/rclone/config
+**/apps/mealie/data
+**/apps/vaultwarden/data
+**/network/caddy/pki_local
+**/smart_home/homeassistant/config
+**/smart_home/mosquitto/config/pwfile
+**/smart_home/mosquitto/data
+**/smart_home/zigbee2mqtt/data
+**/smart_home/frigate/config.yml
+
+# media stack
+**/pvr/vpn/wg0.conf
+**/pvr/qbittorrent/*
+**/pvr/sonarr/*
+**/pvr/radarr/*
+**/pvr/prowlarr/*
+**/pvr/bazarr/*
+**/pvr/recyclarr/*
+!**/pvr/recyclarr/recyclarr.yml

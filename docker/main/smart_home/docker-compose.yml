@@ -1,0 +1,122 @@
+version: "3.9"
+
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./homeassistant/config:/config
+    privileged: true
+    depends_on:
+      - homeassistant_db
+      - mqtt
+    networks:
+      - internal
+    labels:
+      caddy_0: "http://ha.${DOMAIN}"
+      caddy_0.reverse_proxy: "{{upstreams 8123}}"
+      caddy_1: "https://ha.${DOMAIN}"
+      caddy_1.tls: internal
+      caddy_1.reverse_proxy: "{{upstreams 8123}}"
+
+  homeassistant_db:
+    container_name: homeassistant_db
+    image: mariadb
+    restart: unless-stopped
+    volumes:
+      - homeassistant_db_data:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: ${HA_MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ha_db
+      MARIADB_USER: homeassistant
+      MARIADB_PASSWORD: ${HA_MARIADB_PASSWORD}
+    networks:
+      - internal
+
+  homeassistant_db_admin:
+    profiles: ["debug"]
+    container_name: homeassistant_db_admin
+    image: adminer
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: homeassistant_db
+      ADMINER_DESIGN: galkaev
+    depends_on:
+      - homeassistant_db
+    networks:
+      - internal
+    labels:
+      caddy: "hadb.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 8080}}"
+
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:rw
+      - ./mosquitto/data:/mosquitto/data:rw
+      - ./mosquitto/log:/mosquitto/log:rw
+    networks:
+      - internal
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
+    restart: unless-stopped
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ./zigbee2mqtt/data:/app/data
+    environment:
+      TZ: ${TZ}
+    devices:
+      - /dev/ttyACMZigbee:/dev/ttyACM0
+    networks:
+      - internal
+    labels:
+      caddy: "z2m.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 8080}}"
+
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    privileged: true
+    shm_size: 128mb
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+      - /dev/dri/renderD128
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/storage/frigate/media:/media/frigate
+      - ./frigate/config.yml:/config/config.yml
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    environment:
+      FRIGATE_MQTT_USER: frigate
+      FRIGATE_MQTT_PASSWORD: ${FRIGATE_MQTT_PASSWORD}
+      FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD}
+    depends_on:
+      - mqtt
+    networks:
+      - internal
+    labels:
+      caddy: "frigate.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 5000}}"
+
+volumes:
+  homeassistant_db_data:
+
+networks:
+  internal:
+    external: true

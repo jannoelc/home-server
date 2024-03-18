@@ -1,0 +1,18 @@
+{
+  "editor.formatOnSave": true,
+  "files.associations": {
+    "*.{yml,yaml}": "yaml",
+    "docker-compose.{yml,yaml}": "dockercompose",
+    "**/homeassistant/**/*.{yml,yaml}": "home-assistant",
+    "**/homeassistant/config/.storage/*": "json"
+  },
+  "[dockercompose]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[home-assistant]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

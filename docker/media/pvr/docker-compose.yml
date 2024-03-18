@@ -1,0 +1,128 @@
+version: "3.9"
+
+services:
+  vpn:
+    container_name: vpn
+    image: qmcgaw/gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ./vpn/wg0.conf:/gluetun/wireguard/wg0.conf:ro
+    privileged: true
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+    networks:
+      - internal
+    labels:
+      caddy_0: "torrent.${DOMAIN}"
+      caddy_0.tls: internal
+      caddy_0.reverse_proxy: "{{upstreams 5080}}"
+      caddy_1: "prowlarr.${DOMAIN}"
+      caddy_1.tls: internal
+      caddy_1.reverse_proxy: "{{upstreams 9696}}"
+
+  torrent:
+    container_name: torrent
+    image: lscr.io/linuxserver/qbittorrent
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      WEBUI_PORT: 5080
+    volumes:
+      - ./qbittorrent:/config
+      - /mnt/e/media:/data
+    network_mode: service:vpn
+    depends_on:
+      - vpn
+
+  prowlarr:
+    container_name: prowlarr
+    image: linuxserver/prowlarr
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./prowlarr:/config
+    network_mode: service:vpn
+    depends_on:
+      - vpn
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./radarr:/config
+      - /mnt/e/media:/data
+    networks:
+      internal:
+        ipv4_address: "172.23.0.78"
+    labels:
+      caddy: "radarr.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 7878}}"
+
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:4.0.0-develop
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./sonarr:/config
+      - /mnt/e/media:/data
+    networks:
+      internal:
+        ipv4_address: "172.23.0.89"
+    labels:
+      caddy: "sonarr.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 8989}}"
+
+  bazarr:
+    container_name: bazarr
+    image: lscr.io/linuxserver/bazarr
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./bazarr:/config
+      - /mnt/e/media:/data
+    networks:
+      internal:
+        ipv4_address: "172.23.0.67"
+    labels:
+      caddy: "bazarr.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 6767}}"
+
+  recyclarr:
+    container_name: recyclarr
+    image: ghcr.io/recyclarr/recyclarr
+    user: ${PUID}:${PGID}
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ./recyclarr:/config
+    networks:
+      - internal
+
+networks:
+  internal:
+    external: true

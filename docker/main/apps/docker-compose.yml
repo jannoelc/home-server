@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  vaultwarden:
+    container_name: vaultwarden
+    image: vaultwarden/server
+    restart: unless-stopped
+    volumes:
+      - ./vaultwarden/data:/data
+    environment:
+      DOMAIN: https://vw.${DOMAIN}
+      LOGIN_RATELIMIT_MAX_BURST: 10
+      LOGIN_RATELIMIT_SECONDS: 60
+      ADMIN_RATELIMIT_MAX_BURST: 10
+      ADMIN_RATELIMIT_SECONDS: 60
+      ADMIN_TOKEN: ${VAULTWARDEN_ADMIN_TOKEN}
+      SENDS_ALLOWED: true
+      EMERGENCY_ACCESS_ALLOWED: true
+      WEB_VAULT_ENABLED: true
+      SIGNUPS_ALLOWED: false
+      SIGNUPS_VERIFY: true
+      SIGNUPS_VERIFY_RESEND_TIME: 3600
+      SIGNUPS_VERIFY_RESEND_LIMIT: 5
+      SIGNUPS_DOMAINS_WHITELIST: vw.${DOMAIN}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_SECURITY: starttls
+      SMTP_FROM: ${SMTP_EMAIL}
+      SMTP_FROM_NAME: Vaultwarden
+      SMTP_USERNAME: ${SMTP_EMAIL}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_AUTH_MECHANISM: Login
+    networks:
+      - internal
+    labels:
+      caddy: "vw.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 80}}"
+
+  mealie:
+    container_name: mealie
+    image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    volumes:
+      - ./mealie/data:/app/data/
+    environment:
+      ALLOW_SIGNUP: true
+      TZ: ${TZ}
+      MAX_WORKERS: 1
+      WEB_CONCURRENCY: 1
+      BASE_URL: https://mealie.doge.home
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_AUTH_STRATEGY: TLS
+      SMTP_FROM_NAME: Mealie
+      SMTP_FROM_EMAIL: ${SMTP_EMAIL}
+      SMTP_USER: ${SMTP_EMAIL}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+    networks:
+      - internal
+    labels:
+      caddy: "meal.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 9000}}"
+
+networks:
+  internal:
+    external: true

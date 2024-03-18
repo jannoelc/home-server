@@ -1,0 +1,17 @@
+{$DOMAIN}, *.{$DOMAIN} {
+	tls internal
+
+	@agh host agh.{$DOMAIN}
+	handle @agh {
+		reverse_proxy {$ADGUARD_HOME_URL}
+	}
+
+	@certs host certs.{$DOMAIN}
+	handle @certs {
+		file_server browse {
+			root /data/caddy/pki/authorities/local
+			hide *.key intermediate.*
+			precompressed zstd br gzip
+		}
+	}
+}

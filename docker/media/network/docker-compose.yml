@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  caddy:
+    container_name: caddy
+    build: ../../images/caddy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./caddy/Caddyfile:/opt/Caddyfile
+      - ./caddy/pki_local:/data/caddy/pki/authorities/local
+    environment:
+      CADDY_DOCKER_CADDYFILE_PATH: /opt/Caddyfile
+      CADDY_INGRESS_NETWORKS: internal
+      CADDY_DOCKER_EVENT_THROTTLE_INTERVAL: 1s
+      CADDY_DOCKER_POLLING_INTERVAL: 300s
+      DOMAIN: ${DOMAIN}
+    networks:
+      internal:
+
+networks:
+  internal:
+    name: internal
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.23.0.0/16

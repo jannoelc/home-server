@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  caddy:
+    container_name: caddy
+    build: ../../images/caddy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./caddy/Caddyfile:/opt/Caddyfile
+      - ./caddy/pki_local:/data/caddy/pki/authorities/local
+    environment:
+      CADDY_DOCKER_CADDYFILE_PATH: /opt/Caddyfile
+      CADDY_INGRESS_NETWORKS: internal
+      CADDY_DOCKER_EVENT_THROTTLE_INTERVAL: 1s
+      CADDY_DOCKER_POLLING_INTERVAL: 300s
+      DOMAIN: ${DOMAIN}
+      ADGUARD_HOME_URL: ${ADGUARD_HOME_URL}
+    networks:
+      internal:
+      tailscale:
+        ipv4_address: "${IPV4_PREFIX}.4"
+
+  tailscale:
+    profiles: ["tailscale"]
+    container_name: tailscale
+    image: tailscale/tailscale:stable
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - tailscale_lib:/var/lib/tailscale
+    environment:
+      TS_AUTHKEY: ${TAILSCALE_AUTH_KEY}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_ROUTES: "${IPV4_PREFIX}.0/16"
+    networks:
+      tailscale:
+        ipv4_address: "${IPV4_PREFIX}.2"
+
+  tailscale_dns:
+    profiles: ["tailscale"]
+    container_name: tailscale_dns
+    image: ubuntu/bind9
+    restart: unless-stopped
+    volumes:
+      - ./tailscale_dns/__generated__/named.conf.local:/etc/bind/named.conf.local
+      - ./tailscale_dns/__generated__/zones:/etc/bind/zones.local
+    networks:
+      tailscale:
+        ipv4_address: "${IPV4_PREFIX}.3"
+
+volumes:
+  tailscale_lib:
+
+networks:
+  internal:
+    name: internal
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.22.0.0/16"
+  tailscale:
+    name: tailscale
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "${IPV4_PREFIX}.0/16"

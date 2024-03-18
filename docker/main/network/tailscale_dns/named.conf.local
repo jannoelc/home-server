@@ -1,0 +1,4 @@
+zone "VAR_DOMAIN" {
+    type master;
+    file "/etc/bind/zones.local/VAR_DOMAIN.zone";
+};

@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer/data:/data
+    networks:
+      - internal
+    labels:
+      caddy: "portainer.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams https 9443}}"
+      caddy.reverse_proxy.transport: http
+      caddy.reverse_proxy.transport.tls_insecure_skip_verify:
+
+  rclone:
+    container_name: rclone
+    build: ../../images/rclone
+    restart: unless-stopped
+    volumes:
+      - ./rclone/config:/config/rclone
+      - ./rclone/exclude.txt:/data/exclude.txt
+      #  Directories to backup
+      # admin stack
+      - ../admin/.env:/mnt/admin/.env:ro # .env
+      - ../admin/portainer/data:/mnt/admin/portainer/data:ro # portainer
+      - ../admin/rclone/config:/mnt/admin/rclone/config:ro # rclone
+      # apps stack
+      - ../apps/mealie/data:/mnt/apps/mealie/data:ro # mealie
+      - ../apps/vaultwarden/data:/mnt/apps/vaultwarden/data:ro # rclone
+      # network stack
+      - ../network/.env:/mnt/network/.env:ro # .env
+      - ../network/caddy/pki_local:/mnt/network/caddy/pki_local:ro # caddy
+      # smart_home stack
+      - ../smart_home/.env:/mnt/smart_home/.env:ro # .env
+      - ../smart_home/homeassistant/config:/mnt/smart_home/homeassistant/config:ro # homeassistant
+      - ../smart_home/mosquitto/config/pwfile:/mnt/smart_home/mosquitto/config/pwfile:ro # mosquitto pwfile
+      - ../smart_home/mosquitto/data:/mnt/smart_home/mosquitto/data:ro # mosquitto data
+      - ../smart_home/zigbee2mqtt/data:/mnt/smart_home/zigbee2mqtt/data:ro # zigbee2mqtt
+      - ../smart_home/frigate/config.yml:/mnt/smart_home/frigate/config.yml:ro # frigate
+    user: ${PUID}:${PGID}
+    environment:
+      TZ: ${TZ}
+      CRON_EXPR: ${CRON_EXPR:-"0 0 * * *"}
+      BACKUP_PASSWORD: ${BACKUP_PASSWORD}
+      BACKUP_PREFIX: main
+      REMOTE_DRIVE_1: gdrive
+      # PING_URL_SUCCESS_1: http://ping.me
+      REMOTE_DRIVE_2: onedrive
+      # PING_URL_SUCCESS_2: http://ping.me
+      # REMOTE_DRIVE_3: rclone-remote
+      # PING_URL_SUCCESS_3: http://ping.me
+    networks:
+      - internal
+    labels:
+      caddy: "rclone.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 5572}}"
+
+  code-server:
+    profiles: ["debug"]
+    container_name: code-server
+    image: lscr.io/linuxserver/code-server
+    restart: unless-stopped
+    volumes:
+      - ../../../:/config/workspace
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      DEFAULT_WORKSPACE: /config/workspace
+      HASHED_PASSWORD: ${HASHED_PASSWORD}
+    networks:
+      - internal
+    labels:
+      caddy: "code.${DOMAIN}"
+      caddy.tls: internal
+      caddy.reverse_proxy: "{{upstreams 8443}}"
+
+networks:
+  internal:
+    external: true
