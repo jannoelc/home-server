@@ -1,0 +1,23 @@
+services:
+  jellyfin:
+    container_name: jellyfin
+    image: linuxserver/jellyfin
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      JELLYFIN_PublishedServerUrl: ${PUBLISHED_SERVER_URL}
+    volumes:
+      - ./config:/config
+      - /mnt/media:/media
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
