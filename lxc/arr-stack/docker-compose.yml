@@ -14,8 +14,11 @@ services:
       - ./vpn/wg0.conf:/gluetun/wireguard/wg0.conf:ro
     privileged: true
     environment:
-      - VPN_SERVICE_PROVIDER=custom
-      - VPN_TYPE=wireguard
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      VPN_SERVICE_PROVIDER: custom
+      VPN_TYPE: wireguard
     networks:
       internal:
         ipv4_address: "172.23.0.10"
