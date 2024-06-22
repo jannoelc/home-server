@@ -6,7 +6,6 @@ services:
     restart: unless-stopped
     ports:
       - 5080:5080
-      - 9696:9696
     cap_add:
       - NET_ADMIN
     devices:
@@ -18,8 +17,7 @@ services:
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard
     networks:
-      internal:
-        ipv4_address: "172.23.0.10"
+      - internal
 
   torrent:
     container_name: torrent
@@ -41,15 +39,17 @@ services:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr
     restart: unless-stopped
+    ports:
+      - 9696:9696
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
     volumes:
       - ./prowlarr:/config
-    network_mode: service:vpn
-    depends_on:
-      - vpn
+    networks:
+      internal:
+        ipv4_address: "172.23.0.96"
 
   radarr:
     container_name: radarr
@@ -110,6 +110,18 @@ services:
       TZ: ${TZ}
     volumes:
       - ./recyclarr:/config
+    networks:
+      - internal
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    environment:
+      LOG_LEVEL: info
+      LOG_HTML: "false"
+      CAPTCHA_SOLVER: none
+      TZ: ${TZ}
     networks:
       - internal
 
