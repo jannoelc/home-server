@@ -1,6 +1,7 @@
 services:
   vpn:
     container_name: vpn
+    hostname: vpn
     image: qmcgaw/gluetun
     restart: unless-stopped
     ports:
