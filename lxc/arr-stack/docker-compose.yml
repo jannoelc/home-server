@@ -1,0 +1,121 @@
+services:
+  vpn:
+    container_name: vpn
+    image: qmcgaw/gluetun
+    restart: unless-stopped
+    ports:
+      - 5080:5080
+      - 9696:9696
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ./vpn/wg0.conf:/gluetun/wireguard/wg0.conf:ro
+    privileged: true
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+    networks:
+      - internal
+
+  torrent:
+    container_name: torrent
+    image: lscr.io/linuxserver/qbittorrent
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      WEBUI_PORT: 5080
+    volumes:
+      - ./qbittorrent:/config
+      - /mnt/media:/data
+    network_mode: service:vpn
+    depends_on:
+      - vpn
+
+  prowlarr:
+    container_name: prowlarr
+    image: lscr.io/linuxserver/prowlarr
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./prowlarr:/config
+    network_mode: service:vpn
+    depends_on:
+      - vpn
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr
+    restart: unless-stopped
+    ports:
+      - 7878:7878
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./radarr:/config
+      - /mnt/media:/data
+    networks:
+      internal:
+        ipv4_address: "172.23.0.78"
+
+  sonarr:
+    container_name: sonarr
+    image: lscr.io/linuxserver/sonarr
+    restart: unless-stopped
+    ports:
+      - 8989:8989
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./sonarr:/config
+      - /mnt/media:/data
+    networks:
+      internal:
+        ipv4_address: "172.23.0.89"
+
+  bazarr:
+    container_name: bazarr
+    image: lscr.io/linuxserver/bazarr
+    restart: unless-stopped
+    ports:
+      - 6767:6767
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./bazarr:/config
+      - /mnt/media:/data
+    networks:
+      internal:
+        ipv4_address: "172.23.0.67"
+
+  recyclarr:
+    container_name: recyclarr
+    image: ghcr.io/recyclarr/recyclarr
+    user: ${PUID}:${PGID}
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ./recyclarr:/config
+    networks:
+      - internal
+
+networks:
+  internal:
+    name: internal
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.23.0.0/16
