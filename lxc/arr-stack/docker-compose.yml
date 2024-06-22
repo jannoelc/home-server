@@ -18,7 +18,8 @@ services:
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard
     networks:
-      - internal
+      internal:
+        ipv4_address: "172.23.0.10"
 
   torrent:
     container_name: torrent
