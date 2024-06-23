@@ -17,7 +17,7 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
-      VPN_TYPE: ${VPN_TYPE}
+      VPN_TYPE: wireguard
       # VPN_SERVICE_PROVIDER: custom
       VPN_SERVICE_PROVIDER: ${VPN_PROVIDER}
       WIREGUARD_PRIVATE_KEY: ${WIREGUARD_PRIVATE_KEY}
