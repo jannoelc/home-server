@@ -16,7 +16,7 @@ services:
     networks:
       internal:
       tailscale:
-        ipv4_address: "${IPV4_PREFIX}.4"
+        ipv4_address: "172.25.0.4"
 
   tailscale:
     profiles: ["tailscale"]
@@ -31,10 +31,10 @@ services:
     environment:
       TS_AUTHKEY: ${TAILSCALE_AUTH_KEY}
       TS_STATE_DIR: /var/lib/tailscale
-      TS_ROUTES: "${IPV4_PREFIX}.0/16"
+      TS_ROUTES: "172.25.0.0/16"
     networks:
       tailscale:
-        ipv4_address: "${IPV4_PREFIX}.2"
+        ipv4_address: "172.25.0.2"
 
   tailscale_dns:
     profiles: ["tailscale"]
@@ -45,7 +45,7 @@ services:
       - ./tailscale/dnsmasq.conf:/etc/dnsmasq.conf
     networks:
       tailscale:
-        ipv4_address: "${IPV4_PREFIX}.3"
+        ipv4_address: "172.25.0.3"
 
 volumes:
   tailscale_lib:
@@ -64,4 +64,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "172.23.0.0/16"
+        - subnet: "172.25.0.0/16"
