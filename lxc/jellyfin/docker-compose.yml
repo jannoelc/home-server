@@ -12,6 +12,7 @@ services:
       JELLYFIN_PublishedServerUrl: ${PUBLISHED_SERVER_URL}
     volumes:
       - ./config:/config
+      - /cache:/config/cache
       - /mnt/media:/media
     extra_hosts:
       - "host.docker.internal:host-gateway"
