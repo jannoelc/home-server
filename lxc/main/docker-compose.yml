@@ -3,24 +3,16 @@ version: "3.9"
 services:
   caddy:
     container_name: caddy
-    build: ../../images/caddy
+    image: caddy
     restart: unless-stopped
     ports:
       - 80:80
       - 443:443
-    cap_add:
-      - NET_ADMIN
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - ./caddy/Caddyfile:/opt/Caddyfile
       - ./caddy/pki_local:/data/caddy/pki/authorities/local
     environment:
-      CADDY_DOCKER_CADDYFILE_PATH: /opt/Caddyfile
-      CADDY_INGRESS_NETWORKS: internal
-      CADDY_DOCKER_EVENT_THROTTLE_INTERVAL: 1s
-      CADDY_DOCKER_POLLING_INTERVAL: 300s
       DOMAIN: ${DOMAIN}
-      ADGUARD_HOME_URL: ${ADGUARD_HOME_URL}
     networks:
       internal:
       tailscale:
@@ -46,12 +38,11 @@ services:
 
   tailscale_dns:
     profiles: ["tailscale"]
-    container_name: tailscale_dns
-    image: ubuntu/bind9
+    image: dockurr/dnsmasq
+    container_name: dnsmasq
     restart: unless-stopped
     volumes:
-      - ./tailscale_dns/__generated__/named.conf.local:/etc/bind/named.conf.local
-      - ./tailscale_dns/__generated__/zones:/etc/bind/zones.local
+      - ./tailscale/dnsmasq.conf:/etc/dnsmasq.conf
     networks:
       tailscale:
         ipv4_address: "${IPV4_PREFIX}.3"
@@ -73,4 +64,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "${IPV4_PREFIX}.0/16"
+        - subnet: "172.23.0.0/16"
