@@ -12,7 +12,7 @@ services:
       - ./caddy/Caddyfile:/opt/Caddyfile
       - ./caddy/pki_local:/data/caddy/pki/authorities/local
     environment:
-      DOMAIN: ${DOMAIN}
+      DOMAIN: doge2.home
     networks:
       internal:
       tailscale:
