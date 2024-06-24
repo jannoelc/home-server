@@ -38,15 +38,13 @@ services:
         ipv4_address: "172.25.0.2"
 
   tailscale_dns:
-    # profiles: ["tailscale"]
+    profiles: ["tailscale"]
     image: dockurr/dnsmasq
     container_name: dnsmasq
     restart: unless-stopped
     volumes:
       - ./tailscale_dns/dnsmasq.conf:/etc/dnsmasq.conf
       - ./tailscale_dns/resolv.conf:/etc/resolv.conf
-    cap_add:
-      - NET_ADMIN
     networks:
       tailscale:
         ipv4_address: "172.25.0.3"

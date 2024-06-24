@@ -14,10 +14,11 @@ wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAM
 
 if ! [ -d tailscale_dns ]; then
     echo "Creating tailscale_dns directory"
+    mkdir tailscale_dns
 fi
 
 wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/tailscale_dns/dnsmasq.conf -O tailscale_dns/dnsmasq.conf
-wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/tailscale_dns/resolv.conf -O tailscale_dns/dnsmasq.conf
+wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/tailscale_dns/resolv.conf -O tailscale_dns/resolv.conf
 
 if ! [ -e .env ]; then
     echo "Creating .env file"
