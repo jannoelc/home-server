@@ -1,0 +1,23 @@
+services:
+  unmanic:
+    container_name: unmanic
+    image: josh5/unmanic:latest
+    ports:
+      - 8888:8888
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ./config:/config
+      - /mnt/media:/library
+      - type: tmpfs
+        target: /tmp/unmanic
+        tmpfs:
+          mode: 01777
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
