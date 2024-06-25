@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DIR_NAME="arr-stack"
+DIR_NAME="servarr
 
 cd ~
 if [ ! -d "$DIR_NAME" ]; then

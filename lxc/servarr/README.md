@@ -1,4 +1,4 @@
-# ARR Stack
+# Servarr Stack
 
 ## Setup
 
