@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "matthewpi.caddyfile-support",
+    "esbenp.prettier-vscode",
+    "keesschollaart.vscode-home-assistant",
+    "ms-azuretools.vscode-docker"
+  ]
+}

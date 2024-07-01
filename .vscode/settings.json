@@ -4,7 +4,8 @@
     "*.{yml,yaml}": "yaml",
     "docker-compose.{yml,yaml}": "dockercompose",
     "**/homeassistant/**/*.{yml,yaml}": "home-assistant",
-    "**/homeassistant/config/.storage/*": "json"
+    "**/homeassistant/config/.storage/*": "json",
+    "Caddyfile": "caddyfile"
   },
   "[dockercompose]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
