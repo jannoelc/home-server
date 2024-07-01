@@ -4,13 +4,13 @@
 	# Jellyfin
 	@jellyfin host jf.{$DOMAIN}
 	handle @jellyfin {
-		reverse_proxy http://{$JELLYFIN_HOST}:8006
+		reverse_proxy http://{$JELLYFIN_HOST}:8096
 	}
 
 	# Servarr
 	@qbittorrent host qbit.{$DOMAIN}
 	handle @qbittorrent {
-		reverse_proxy http://{$SERVARR_HOST}:9696
+		reverse_proxy http://{$SERVARR_HOST}:5080
 	}
 
 	@prowlarr host prowlarr.{$DOMAIN}
