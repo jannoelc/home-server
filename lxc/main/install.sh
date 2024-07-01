@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DIR_NAME="remote"
+DIR_NAME="main"
 
 cd ~
 if [ ! -d "$DIR_NAME" ]; then
@@ -12,13 +12,12 @@ cd "$DIR_NAME"
 echo "Updating docker-compose.yml file"
 wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/docker-compose.yml -O docker-compose.yml
 
-if ! [ -d tailscale_dns ]; then
-    echo "Creating tailscale_dns directory"
-    mkdir tailscale_dns
+if ! [ -d caddy ]; then
+    echo "Creating caddy directory"
+    mkdir caddy
 fi
 
-wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/tailscale_dns/dnsmasq.conf -O tailscale_dns/dnsmasq.conf
-wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/tailscale_dns/resolv.conf -O tailscale_dns/resolv.conf
+wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/caddy/Caddyfile -O caddy/Caddyfile
 
 if ! [ -e .env ]; then
     echo "Creating .env file"

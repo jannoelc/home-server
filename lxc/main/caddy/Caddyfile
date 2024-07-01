@@ -1,0 +1,8 @@
+{$DOMAIN}, *.{$DOMAIN} {
+	tls internal
+
+	@jellyfin host jf.{$DOMAIN}
+	handle @jellyfin {
+		reverse_proxy http://172.16.69.32:8006
+	}
+}
