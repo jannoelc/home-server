@@ -1,8 +1,35 @@
 {$DOMAIN}, *.{$DOMAIN} {
 	tls internal
 
+	# Jellyfin
 	@jellyfin host jf.{$DOMAIN}
 	handle @jellyfin {
-		reverse_proxy http://172.16.69.32:8006
+		reverse_proxy http://{$JELLYFIN_HOST}:8006
+	}
+
+	# Servarr
+	@qbittorrent host qbit.{$DOMAIN}
+	handle @qbittorrent {
+		reverse_proxy http://{$SERVARR_HOST}:9696
+	}
+
+	@prowlarr host prowlarr.{$DOMAIN}
+	handle @prowlarr {
+		reverse_proxy http://{$SERVARR_HOST}:9696
+	}
+
+	@radarr host radarr.{$DOMAIN}
+	handle @radarr {
+		reverse_proxy http://{$SERVARR_HOST}:7878
+	}
+
+	@sonarr host sonarr.{$DOMAIN}
+	handle @sonarr {
+		reverse_proxy http://{$SERVARR_HOST}:8989
+	}
+
+	@bazarr host bazarr.{$DOMAIN}
+	handle @bazarr {
+		reverse_proxy http://{$SERVARR_HOST}:6767
 	}
 }

@@ -13,7 +13,9 @@ services:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - ./caddy/pki_local:/data/caddy/pki/authorities/local
     environment:
-      DOMAIN: doge.home
+      DOMAIN: ${DOMAIN}
+      JELLYFIN_HOST: ${JELLYFIN_HOST}
+      SERVARR_HOST: ${SERVARR_HOST}
     networks:
       - internal
 
