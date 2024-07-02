@@ -1,0 +1,25 @@
+services:
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:0.14.0-beta3-tensorrt
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    shm_size: 256mb
+    # devices:
+    #   - /dev/bus/usb:/dev/bus/usb
+    #   - /dev/dri/renderD128
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/media:/media/frigate
+      - ./config.yml:/config/config.yml
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
