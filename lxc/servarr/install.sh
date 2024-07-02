@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DIR_NAME="servarr
+DIR_NAME="servarr"
 
 cd ~
 if [ ! -d "$DIR_NAME" ]; then
