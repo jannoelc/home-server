@@ -131,18 +131,6 @@ services:
     networks:
       - internal
 
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
-    restart: unless-stopped
-    user: ${PUID}:${PGID}
-    environment:
-      TZ: ${TZ}
-    ports:
-      - 5055:5055
-    volumes:
-      - ./jellyseerr:/app/config
-
 networks:
   internal:
     name: internal

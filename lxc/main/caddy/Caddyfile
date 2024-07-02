@@ -32,9 +32,4 @@
 	handle @bazarr {
 		reverse_proxy http://{$SERVARR_HOST}:6767
 	}
-
-	@jellyseer host jellyseer.{$DOMAIN}
-	handle @jellyseer {
-		reverse_proxy http://{$SERVARR_HOST}:5055
-	}
 }
