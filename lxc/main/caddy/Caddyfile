@@ -2,13 +2,13 @@
 	tls internal
 
 	# Jellyfin
-	@jellyfin host jf.{$DOMAIN}
+	@jellyfin host jellyfin.{$DOMAIN}
 	handle @jellyfin {
 		reverse_proxy http://{$JELLYFIN_HOST}:8096
 	}
 
 	# Servarr
-	@qbittorrent host qbit.{$DOMAIN}
+	@qbittorrent host qbittorent.{$DOMAIN}
 	handle @qbittorrent {
 		reverse_proxy http://{$SERVARR_HOST}:5080
 	}
@@ -31,5 +31,10 @@
 	@bazarr host bazarr.{$DOMAIN}
 	handle @bazarr {
 		reverse_proxy http://{$SERVARR_HOST}:6767
+	}
+
+	@jellyseer host jellyseer.{$DOMAIN}
+	handle @jellyseer {
+		reverse_proxy http://{$SERVARR_HOST}:5055
 	}
 }

@@ -108,6 +108,7 @@ services:
         ipv4_address: "172.23.0.67"
 
   recyclarr:
+    profiles: ["recyclarr"]
     container_name: recyclarr
     image: ghcr.io/recyclarr/recyclarr
     user: ${PUID}:${PGID}
@@ -129,6 +130,18 @@ services:
       TZ: ${TZ}
     networks:
       - internal
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    restart: unless-stopped
+    user: ${PUID}:${PGID}
+    environment:
+      TZ: ${TZ}
+    ports:
+      - 5055:5055
+    volumes:
+      - ./jellyseerr:/app/config
 
 networks:
   internal:
