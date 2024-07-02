@@ -10,6 +10,6 @@ bash -c "$(wget -qO - https://raw.githubusercontent.com/jannoelc/home-server/dev
 
 Start using the command below:
 
-```typescript
+```bash
 docker compose up -d
 ```

@@ -10,6 +10,6 @@ bash -c "$(wget -qO - https://raw.githubusercontent.com/jannoelc/home-server/dev
 
 To start the docker compose stack, run:
 
-```typescript
+```bash
 docker compose up -d
 ```
