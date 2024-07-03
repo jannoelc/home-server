@@ -14,7 +14,7 @@
 	}
 
 	# Servarr
-	@qbittorrent host qbittorent.{$DOMAIN}
+	@qbittorrent host qbittorrent.{$DOMAIN}
 	handle @qbittorrent {
 		reverse_proxy http://{$SERVARR_HOST}:5080
 	}
