@@ -1,6 +1,12 @@
 {$DOMAIN}, *.{$DOMAIN} {
 	tls internal
 
+	# Frigate
+	@frigate host frigate.{$DOMAIN}
+	handle @frigate {
+		reverse_proxy http://{$FRIGATE_HOST}:5000
+	}
+
 	# Jellyfin
 	@jellyfin host jellyfin.{$DOMAIN}
 	handle @jellyfin {
