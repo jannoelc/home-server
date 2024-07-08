@@ -4,6 +4,7 @@
 	# Frigate
 	@frigate host frigate.{$DOMAIN}
 	handle @frigate {
+		header_up +X-Proxy-Secret {$FRIGATE_PROXY_SECRET}
 		reverse_proxy http://{$FRIGATE_HOST}:5000
 	}
 

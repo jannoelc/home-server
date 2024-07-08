@@ -14,11 +14,12 @@ services:
       - ./caddy/pki_local:/data/caddy/pki/authorities/local
     environment:
       DOMAIN: ${DOMAIN}
+      FRIGATE_PROXY_SECRET: ${FRIGATE_PROXY_SECRET}
+      FRIGATE_HOST: ${FRIGATE_HOST}
       JELLYFIN_HOST: ${JELLYFIN_HOST}
       SERVARR_HOST: ${SERVARR_HOST}
     networks:
       - internal
-
 
 networks:
   internal:
