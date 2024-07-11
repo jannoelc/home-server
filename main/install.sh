@@ -2,24 +2,11 @@
 
 DIR_NAME="main"
 
-cd ~
-if [ ! -d "$DIR_NAME" ]; then
-    echo "Creating $DIR_NAME directory"
-    mkdir "$DIR_NAME"
-fi
-cd "$DIR_NAME"
+git clone --filter=blob:none --sparse \
+    https://github.com/jannoelc/home-server.git dogehome
 
-echo "Updating docker-compose.yml file"
-wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/docker-compose.yml -O docker-compose.yml
+cd dogehome
 
-if ! [ -d caddy ]; then
-    echo "Creating caddy directory"
-    mkdir caddy
-fi
+git sparse-checkout add $DIR_NAME
 
-wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/caddy/Caddyfile -O caddy/Caddyfile
-
-if ! [ -e .env ]; then
-    echo "Creating .env file"
-    wget https://raw.githubusercontent.com/jannoelc/home-server/develop/lxc/$DIR_NAME/.env.sample -O .env
-fi
+git checkout develop

@@ -20,6 +20,18 @@ services:
     networks:
       - internal
 
+  homepage:
+    container_name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    restart: unless-stopped
+    volumes:
+      - ./homepage:/app/config
+    environment:
+      PUID: $PUID
+      PGID: $PGID
+    networks:
+      - internal
+
   homer:
     container_name: homer
     image: b4bz/homer
@@ -28,7 +40,7 @@ services:
       - ./homer/assets/:/www/assets
     user: ${PUID}:${GUID}
     environment:
-      INIT_ASSETS: 1
+      INIT_ASSETS: 0
       IPV6_DISABLE: 1
     networks:
       - internal
