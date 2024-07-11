@@ -14,10 +14,22 @@ services:
       - ./caddy/pki_local:/data/caddy/pki/authorities/local
     environment:
       DOMAIN: ${DOMAIN}
-      FRIGATE_PROXY_SECRET: ${FRIGATE_PROXY_SECRET}
       FRIGATE_HOST: ${FRIGATE_HOST}
       JELLYFIN_HOST: ${JELLYFIN_HOST}
       SERVARR_HOST: ${SERVARR_HOST}
+    networks:
+      - internal
+
+  homer:
+    container_name: homer
+    image: b4bz/homer
+    restart: unless-stopped
+    volumes:
+      - ./homer/assets/:/www/assets
+    user: ${PUID}:${GUID}
+    environment:
+      INIT_ASSETS: 1
+      IPV6_DISABLE: 1
     networks:
       - internal
 

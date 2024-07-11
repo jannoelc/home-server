@@ -1,42 +1,57 @@
 {$DOMAIN}, *.{$DOMAIN} {
-	tls internal
+        tls internal
 
-	# Frigate
-	@frigate host frigate.{$DOMAIN}
-	handle @frigate {
-		header_up +X-Proxy-Secret {$FRIGATE_PROXY_SECRET}
-		reverse_proxy http://{$FRIGATE_HOST}:5000
-	}
+        # PiHole
+        @pihole host pihole.{$DOMAIN}
+        handle @pihole {
+                reverse_proxy http://{$PIHOLE_HOST}
+        }
 
-	# Jellyfin
-	@jellyfin host jellyfin.{$DOMAIN}
-	handle @jellyfin {
-		reverse_proxy http://{$JELLYFIN_HOST}:8096
-	}
+        # Frigate
+        @frigate host frigate.{$DOMAIN}
+        handle @frigate {
+                reverse_proxy http://{$FRIGATE_HOST}:5000
+        }
 
-	# Servarr
-	@qbittorrent host qbittorrent.{$DOMAIN}
-	handle @qbittorrent {
-		reverse_proxy http://{$SERVARR_HOST}:5080
-	}
+        # Jellyfin
+        @jellyfin host jellyfin.{$DOMAIN}
+        handle @jellyfin {
+                reverse_proxy http://{$JELLYFIN_HOST}:8096
+        }
 
-	@prowlarr host prowlarr.{$DOMAIN}
-	handle @prowlarr {
-		reverse_proxy http://{$SERVARR_HOST}:9696
-	}
+        # Servarr
+        @qbittorrent host qbittorrent.{$DOMAIN}
+        handle @qbittorrent {
+                reverse_proxy http://{$SERVARR_HOST}:5080
+        }
 
-	@radarr host radarr.{$DOMAIN}
-	handle @radarr {
-		reverse_proxy http://{$SERVARR_HOST}:7878
-	}
+        @prowlarr host prowlarr.{$DOMAIN}
+        handle @prowlarr {
+                reverse_proxy http://{$SERVARR_HOST}:9696
+        }
 
-	@sonarr host sonarr.{$DOMAIN}
-	handle @sonarr {
-		reverse_proxy http://{$SERVARR_HOST}:8989
-	}
+        @radarr host radarr.{$DOMAIN}
+        handle @radarr {
+                reverse_proxy http://{$SERVARR_HOST}:7878
+        }
 
-	@bazarr host bazarr.{$DOMAIN}
-	handle @bazarr {
-		reverse_proxy http://{$SERVARR_HOST}:6767
-	}
+        @sonarr host sonarr.{$DOMAIN}
+        handle @sonarr {
+                reverse_proxy http://{$SERVARR_HOST}:8989
+        }
+
+        @bazarr host bazarr.{$DOMAIN}
+        handle @bazarr {
+                reverse_proxy http://{$SERVARR_HOST}:6767
+        }
+
+        handle @bazarr {
+                reverse_proxy http://{$SERVARR_HOST}:6767
+        }
+
+        handle *.{$DOMAIN} {
+                redir /
+        }
+
+        reverse_proxy http://homerr:8080
 }
