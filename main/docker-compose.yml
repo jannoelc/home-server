@@ -32,19 +32,6 @@ services:
     networks:
       - internal
 
-  homer:
-    container_name: homer
-    image: b4bz/homer
-    restart: unless-stopped
-    volumes:
-      - ./homer/assets/:/www/assets
-    user: ${PUID}:${GUID}
-    environment:
-      INIT_ASSETS: 0
-      IPV6_DISABLE: 1
-    networks:
-      - internal
-
 networks:
   internal:
     name: internal
