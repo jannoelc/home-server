@@ -1,61 +1,62 @@
 {$DOMAIN} {
-        tls internal
-        encode zstd gzip
+	tls internal
+	encode zstd gzip
 
-        reverse_proxy http://homepage:3000
+	# Homepage (literally)
+	reverse_proxy http://homepage:3000
 }
 
-
 *.{$DOMAIN} {
-        tls internal
-        encode zstd gzip
+	tls internal
+	encode zstd gzip
 
-        # Redirect to homepage if not existing
-        handle {
-                redir https://{$DOMAIN}
-        }
+	# Redirect to homepage if not existing
+	handle {
+		redir https://{$DOMAIN}
+	}
 
-        # PiHole
-        @pihole host pihole.{$DOMAIN}
-        handle @pihole {
-                reverse_proxy http://{$PIHOLE_HOST}
-        }
+	# PiHole
+	@pihole host pihole.{$DOMAIN}
+	handle @pihole {
+		redir / /admin/
+		reverse_proxy {$PIHOLE_HOST}
+	}
 
-        # Frigate
-        @frigate host frigate.{$DOMAIN}
-        handle @frigate {
-                reverse_proxy http://{$FRIGATE_HOST}:5000
-        }
+	# Frigate
+	@frigate host frigate.{$DOMAIN}
+	handle @frigate {
+		reverse_proxy {$FRIGATE_HOST}
+	}
 
-        # Jellyfin
-        @jellyfin host jellyfin.{$DOMAIN}
-        handle @jellyfin {
-                reverse_proxy http://{$JELLYFIN_HOST}:8096
-        }
+	# Jellyfin
+	@jellyfin host jellyfin.{$DOMAIN}
+	handle @jellyfin {
+		reverse_proxy {$JELLYFIN_HOST}
+	}
 
-        # Servarr
-        @qbittorrent host qbittorrent.{$DOMAIN}
-        handle @qbittorrent {
-                reverse_proxy http://{$SERVARR_HOST}:5080
-        }
+	# Servarr
+	@qbittorrent host qbittorrent.{$DOMAIN}
+	handle @qbittorrent {
+		reverse_proxy {$QBITTORRENT_HOST}
+	}
 
-        @prowlarr host prowlarr.{$DOMAIN}
-        handle @prowlarr {
-                reverse_proxy http://{$SERVARR_HOST}:9696
-        }
+	@prowlarr host prowlarr.{$DOMAIN}
+	handle @prowlarr {
+		reverse_proxy {$PROWLARR_HOST}
+	}
 
-        @radarr host radarr.{$DOMAIN}
-        handle @radarr {
-                reverse_proxy http://{$SERVARR_HOST}:7878
-        }
+	@radarr host radarr.{$DOMAIN}
+	handle @radarr {
+		reverse_proxy {$RADARR_HOST}
+	}
 
-        @sonarr host sonarr.{$DOMAIN}
-        handle @sonarr {
-                reverse_proxy http://{$SERVARR_HOST}:8989
-        }
+	@sonarr host sonarr.{$DOMAIN}
+	handle @sonarr {
+		reverse_proxy {$SONARR_HOST}
+	}
 
-        @bazarr host bazarr.{$DOMAIN}
-        handle @bazarr {
-                reverse_proxy http://{$SERVARR_HOST}:6767
-        }
+	@bazarr host bazarr.{$DOMAIN}
+	handle @bazarr {
+		reverse_proxy {$BAZARR_HOST}
+	}
 }
