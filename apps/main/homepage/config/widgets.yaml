@@ -1,0 +1,17 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/service-widgets
+
+- search:
+    provider: duckduckgo
+    target: _blank
+
+- glances:
+    url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+    username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+    password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+    version: 4
+    cpu: true
+    mem: true
+    diskUnits: bytes
+    expanded: true

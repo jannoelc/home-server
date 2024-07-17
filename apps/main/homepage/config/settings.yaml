@@ -1,0 +1,60 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+
+title: Doge Homepage
+color: gray
+theme: dark
+background:
+  image: /assets/images/shaded_landscape.png
+  opacity: 80
+favicon: /assets/images/favicon/favicon.ico
+disableCollapse: true
+headerStyle: boxed
+hideVersion: true
+
+layout:
+  Smart Home:
+    tab: Apps
+    style: column
+  Media:
+    tab: Apps
+    style: column
+  Other Apps:
+    tab: Apps
+    style: column
+  Servarr:
+    tab: Apps
+    style: row
+    columns: 3
+  Networking:
+    tab: Apps
+    style: row
+    columns: 3
+  Networking 2:
+    tab: Apps
+    style: row
+    columns: 3
+    header: false
+  Host Info 1:
+    tab: System
+    style: row
+    columns: 4
+    header: false
+    useEqualHeights: true
+  Host Info 2:
+    tab: System
+    style: row
+    columns: 3
+    header: false
+    useEqualHeights: true
+  Mount Points:
+    tab: System
+    style: row
+    columns: 3
+    useEqualHeights: true
+  Disks:
+    tab: System
+    style: row
+    columns: 4
+    useEqualHeights: true

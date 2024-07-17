@@ -2,17 +2,51 @@
 	tls internal
 	encode zstd gzip
 
+	# Shared assets
+	handle_path /assets/* {
+		root * /srv/assets
+		file_server
+	}
+
 	# Homepage (literally)
-	reverse_proxy http://homepage:3000
+	handle {
+		reverse_proxy http://homepage:3000
+	}
 }
 
-*.{$DOMAIN} {
+*.{$DOMAIN}, *.*.{$DOMAIN} {
 	tls internal
 	encode zstd gzip
 
 	# Redirect to homepage if not existing
 	handle {
 		redir https://{$DOMAIN}
+	}
+
+	# OpenWRT
+	@openwrt_router host router.openwrt.{$DOMAIN}
+	handle @openwrt_router {
+		reverse_proxy {$OPENWRT_ROUTER_HOST}
+	}
+
+	@openwrt_ap0 host ap0.openwrt.{$DOMAIN}
+	handle @openwrt_ap0 {
+		reverse_proxy {$OPENWRT_AP0_HOST}
+	}
+
+	@openwrt_ap1 host ap1.openwrt.{$DOMAIN}
+	handle @openwrt_ap1 {
+		reverse_proxy {$OPENWRT_AP1_HOST}
+	}
+
+	@openwrt_ap2 host ap2.openwrt.{$DOMAIN}
+	handle @openwrt_ap2 {
+		reverse_proxy {$OPENWRT_AP2_HOST}
+	}
+
+	@openwrt_ap3 host ap3.openwrt.{$DOMAIN}
+	handle @openwrt_ap3 {
+		reverse_proxy {$OPENWRT_AP3_HOST}
 	}
 
 	# PiHole
@@ -22,10 +56,28 @@
 		reverse_proxy {$PIHOLE_HOST}
 	}
 
+	# Home Assistant
+	@ha host ha.{$DOMAIN}
+	handle @ha {
+		reverse_proxy {$HOME_ASSISTANT_HOST}
+	}
+
 	# Frigate
 	@frigate host frigate.{$DOMAIN}
 	handle @frigate {
 		reverse_proxy {$FRIGATE_HOST}
+	}
+
+	# Zigbee2MQTT
+	@z2m host z2m.{$DOMAIN}
+	handle @z2m {
+		reverse_proxy {$Z2M_HOST}
+	}
+
+	# Node-RED
+	@nodered host nodered.{$DOMAIN}
+	handle @nodered {
+		reverse_proxy {$NODE_RED_HOST}
 	}
 
 	# Jellyfin
@@ -35,6 +87,11 @@
 	}
 
 	# Servarr
+	@gluetun host gluetun.{$DOMAIN}
+	handle @gluetun {
+		reverse_proxy {$GLUETUN_HOST}
+	}
+
 	@qbittorrent host qbittorrent.{$DOMAIN}
 	handle @qbittorrent {
 		reverse_proxy {$QBITTORRENT_HOST}

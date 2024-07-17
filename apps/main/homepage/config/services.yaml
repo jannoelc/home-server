@@ -1,0 +1,334 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Smart Home:
+    - Home Assistant:
+        icon: home-assistant.png
+        href: "{{HOMEPAGE_VAR_HOME_ASSISTANT_HOST}}"
+        siteMonitor: "{{HOMEPAGE_VAR_HOME_ASSISTANT_HOST}}"
+
+    - Frigate:
+        icon: frigate.png
+        href: "{{HOMEPAGE_VAR_FRIGATE_HOST}}"
+        siteMonitor: "{{HOMEPAGE_VAR_FRIGATE_HOST}}"
+
+    - Zigbee2MQTT:
+        icon: zigbee2mqtt.png
+        href: "{{HOMEPAGE_VAR_Z2M_HOST}}"
+        siteMonitor: "{{HOMEPAGE_VAR_Z2M_HOST}}"
+
+    - Node-RED:
+        icon: node-red.png
+        href: "{{HOMEPAGE_VAR_NODE_RED_HOST}}"
+        siteMonitor: "{{HOMEPAGE_VAR_NODE_RED_HOST}}"
+
+- Media:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: https://jellyfin.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_JELLYFIN_HOST}}/health"
+        widget:
+          type: jellyfin
+          url: "{{HOMEPAGE_VAR_JELLYFIN_HOST}}"
+          key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
+          enableBlocks: false
+          enableNowPlaying: true
+          enableUser: false
+          showEpisodeNumber: false
+          expandOneStreamToTwoRows: false
+
+    - Youtube:
+        icon: youtube.png
+        href: https://youtube.com
+
+    - Spotify:
+        icon: spotify.png
+        href: https://spotify.com
+
+- Other Apps:
+    - Vaultwarden:
+        icon: vaultwarden.png
+        href: "{{HOMEPAGE_VAR_VAULTWARDEN_HOST}}"
+        siteMonitor: "{{HOMEPAGE_VAR_VAULTWARDEN_HOST}}"
+
+- Servarr:
+    - Radarr:
+        icon: radarr.png
+        href: https://radarr.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_RADARR_HOST}}"
+        widget:
+          type: radarr
+          url: "{{HOMEPAGE_VAR_RADARR_HOST}}"
+          key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
+          enableQueue: true
+
+    - Sonarr:
+        icon: sonarr.png
+        href: https://sonarr.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_SONARR_HOST}}"
+        widget:
+          type: sonarr
+          url: "{{HOMEPAGE_VAR_SONARR_HOST}}"
+          key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
+          enableQueue: true
+
+    - Bazarr:
+        icon: bazarr.png
+        href: https://bazarr.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_BAZARR_HOST}}"
+        widget:
+          type: bazarr
+          url: "{{HOMEPAGE_VAR_BAZARR_HOST}}"
+          key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
+
+    - Prowlarr:
+        icon: prowlarr.png
+        href: https://prowlarr.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_PROWLARR_HOST}}"
+        widget:
+          type: prowlarr
+          url: "{{HOMEPAGE_VAR_PROWLARR_HOST}}"
+          key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
+
+    - Torrent:
+        icon: qbittorrent.png
+        href: https://qbittorrent.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_QBITTORRENT_HOST}}"
+        widget:
+          type: qbittorrent
+          url: "{{HOMEPAGE_VAR_QBITTORRENT_HOST}}"
+
+    - VPN:
+        icon: gluetun.png
+        widget:
+          type: gluetun
+          url: "{{HOMEPAGE_VAR_GLUETUN_HOST}}"
+
+- Networking:
+    - Pi-Hole:
+        icon: pi-hole.png
+        href: https://pihole.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_PIHOLE_HOST}}"
+        widget:
+          type: pihole
+          url: "{{HOMEPAGE_VAR_PIHOLE_HOST}}"
+          version: 6
+          key: "{{HOMEPAGE_VAR_PIHOLE_API_KEY}}"
+
+    - OpenWRT Router:
+        icon: openwrt.png
+        href: https://router.openwrt.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_OPENWRT_ROUTER_HOST}}/cgi-bin/luci"
+        widget:
+          type: openwrt
+          url: "{{HOMEPAGE_VAR_OPENWRT_ROUTER_HOST}}"
+          username: homepage
+          password: "{{HOMEPAGE_VAR_OPENWRT_ROUTER_PASSWORD}}"
+
+- Networking 2:
+    - OpenWRT AP0:
+        icon: openwrt.png
+        href: https://ap0.openwrt.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_OPENWRT_AP0_HOST}}/cgi-bin/luci"
+
+    - OpenWRT AP1:
+        icon: openwrt.png
+        href: https://ap1.openwrt.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_OPENWRT_AP1_HOST}}/cgi-bin/luci"
+
+    - OpenWRT AP2:
+        icon: openwrt.png
+        href: https://ap2.openwrt.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "{{HOMEPAGE_VAR_OPENWRT_AP2_HOST}}/cgi-bin/luci"
+
+- Host Info 1:
+    - Info:
+        widget:
+          type: glances
+          metric: info
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - CPU Usage:
+        widget:
+          type: glances
+          metric: cpu
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - Memory:
+        widget:
+          type: glances
+          metric: memory
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - CPU Temperature:
+        widget:
+          type: glances
+          metric: sensor:Package id 0
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+- Host Info 2:
+    - GPU:
+        widget:
+          type: glances
+          metric: gpu:nvidia0
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - Network Usage:
+        widget:
+          type: glances
+          metric: network:enp4s0
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - Processes:
+        widget:
+          type: glances
+          metric: process
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+- Mount Points:
+    - "{{HOMEPAGE_VAR_DISK0_MOUNT_POINT}}":
+        widget:
+          type: glances
+          metric: fs:{{HOMEPAGE_VAR_DISK0_MOUNT_POINT}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - "{{HOMEPAGE_VAR_DISK1_MOUNT_POINT}}":
+        widget:
+          type: glances
+          metric: fs:{{HOMEPAGE_VAR_DISK1_MOUNT_POINT}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - "{{HOMEPAGE_VAR_DISK2_MOUNT_POINT}}":
+        widget:
+          type: glances
+          metric: fs:{{HOMEPAGE_VAR_DISK2_MOUNT_POINT}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+- Disks:
+    - "{{HOMEPAGE_VAR_DISK0_LABEL}} ({{HOMEPAGE_VAR_DISK0_NAME}})":
+        widget:
+          type: glances
+          metric: disk:{{HOMEPAGE_VAR_DISK0_NAME}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - "{{HOMEPAGE_VAR_DISK1_LABEL}} ({{HOMEPAGE_VAR_DISK1_NAME}})":
+        widget:
+          type: glances
+          metric: disk:{{HOMEPAGE_VAR_DISK1_NAME}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - "{{HOMEPAGE_VAR_DISK2_LABEL}} ({{HOMEPAGE_VAR_DISK2_NAME}})":
+        widget:
+          type: glances
+          metric: disk:{{HOMEPAGE_VAR_DISK2_NAME}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - "{{HOMEPAGE_VAR_DISK3_LABEL}} ({{HOMEPAGE_VAR_DISK3_NAME}})":
+        widget:
+          type: glances
+          metric: disk:{{HOMEPAGE_VAR_DISK3_NAME}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - "{{HOMEPAGE_VAR_DISK0_LABEL}} Temp ({{HOMEPAGE_VAR_DISK0_NAME}})":
+        widget:
+          type: glances
+          metric: sensor:{{HOMEPAGE_VAR_DISK0_SENSOR_NAME}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - "{{HOMEPAGE_VAR_DISK1_LABEL}} Temp ({{HOMEPAGE_VAR_DISK1_NAME}})":
+        widget:
+          type: glances
+          metric: sensor:{{HOMEPAGE_VAR_DISK1_SENSOR_NAME}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
+
+    - "{{HOMEPAGE_VAR_DISK2_LABEL}} Temp ({{HOMEPAGE_VAR_DISK2_NAME}})":
+        widget:
+          type: glances
+          metric: sensor:{{HOMEPAGE_VAR_DISK2_SENSOR_NAME}}
+          url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
+          username: "{{HOMEPAGE_VAR_GLANCES_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_GLANCES_PASSWORD}}"
+          version: 4
+          diskUnits: bytes
+          refreshInterval: 5000
