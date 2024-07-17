@@ -87,11 +87,6 @@
 	}
 
 	# Servarr
-	@gluetun host gluetun.{$DOMAIN}
-	handle @gluetun {
-		reverse_proxy {$GLUETUN_HOST}
-	}
-
 	@qbittorrent host qbittorrent.{$DOMAIN}
 	handle @qbittorrent {
 		reverse_proxy {$QBITTORRENT_HOST}
