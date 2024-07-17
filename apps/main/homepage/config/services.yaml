@@ -5,22 +5,22 @@
 - Smart Home:
     - Home Assistant:
         icon: home-assistant.png
-        href: "{{HOMEPAGE_VAR_HOME_ASSISTANT_HOST}}"
+        href: https://ha.{{HOMEPAGE_VAR_DOMAIN}}
         siteMonitor: "{{HOMEPAGE_VAR_HOME_ASSISTANT_HOST}}"
 
     - Frigate:
         icon: frigate.png
-        href: "{{HOMEPAGE_VAR_FRIGATE_HOST}}"
+        href: https://frigate.{{HOMEPAGE_VAR_DOMAIN}}
         siteMonitor: "{{HOMEPAGE_VAR_FRIGATE_HOST}}"
 
     - Zigbee2MQTT:
         icon: zigbee2mqtt.png
-        href: "{{HOMEPAGE_VAR_Z2M_HOST}}"
+        href: https://z2m.{{HOMEPAGE_VAR_DOMAIN}}
         siteMonitor: "{{HOMEPAGE_VAR_Z2M_HOST}}"
 
     - Node-RED:
         icon: node-red.png
-        href: "{{HOMEPAGE_VAR_NODE_RED_HOST}}"
+        href: https://nodered.{{HOMEPAGE_VAR_DOMAIN}}
         siteMonitor: "{{HOMEPAGE_VAR_NODE_RED_HOST}}"
 
 - Media:
@@ -49,7 +49,7 @@
 - Other Apps:
     - Vaultwarden:
         icon: vaultwarden.png
-        href: "{{HOMEPAGE_VAR_VAULTWARDEN_HOST}}"
+        href: https://vw.{{HOMEPAGE_VAR_DOMAIN}}
         siteMonitor: "{{HOMEPAGE_VAR_VAULTWARDEN_HOST}}"
 
 - Servarr:

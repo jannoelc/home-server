@@ -14,14 +14,9 @@
 	}
 }
 
-*.{$DOMAIN}, *.*.{$DOMAIN} {
+*.openwrt.{$DOMAIN} {
 	tls internal
 	encode zstd gzip
-
-	# Redirect to homepage if not existing
-	handle {
-		redir https://{$DOMAIN}
-	}
 
 	# OpenWRT
 	@openwrt_router host router.openwrt.{$DOMAIN}
@@ -47,6 +42,16 @@
 	@openwrt_ap3 host ap3.openwrt.{$DOMAIN}
 	handle @openwrt_ap3 {
 		reverse_proxy {$OPENWRT_AP3_HOST}
+	}
+}
+
+*.{$DOMAIN} {
+	tls internal
+	encode zstd gzip
+
+	# Redirect to homepage if not existing
+	handle {
+		redir https://{$DOMAIN}
 	}
 
 	# PiHole
@@ -110,5 +115,11 @@
 	@bazarr host bazarr.{$DOMAIN}
 	handle @bazarr {
 		reverse_proxy {$BAZARR_HOST}
+	}
+
+	# Vaultwarden
+	@vw host vw.{$DOMAIN}
+	handle @vw {
+		reverse_proxy {$VAULTWARDEN_HOST}
 	}
 }
