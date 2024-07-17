@@ -4,7 +4,7 @@
 
 - search:
     provider: duckduckgo
-    target: _blank
+    target: _self
 
 - glances:
     url: "{{HOMEPAGE_VAR_GLANCES_HOST}}"
